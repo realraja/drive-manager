@@ -20,7 +20,7 @@ export default function Home() {
 
   const drivesWithInfo = formatDriveSize();
 
-  const handleDriveClick = (drive) => {
+  const handleDriveClick = (drive: any) => {
     setSelectedDrive(drive);
     // In a real application, this would navigate to the drive contents
     console.log(`Navigating to drive: ${drive}`);
@@ -60,8 +60,8 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {drivesWithInfo.map((drive, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="bg-gray-800 rounded-xl p-6 shadow-2xl transform transition-all hover:scale-105 hover:shadow-2xl cursor-pointer"
               onClick={() => handleDriveClick(drive.name)}
             >
@@ -73,20 +73,19 @@ export default function Home() {
                 </div>
                 <span className="px-3 py-1 bg-gray-700 text-xs text-blue-300 rounded-full">Local</span>
               </div>
-              
+
               <h3 className="text-xl font-semibold text-white mb-2">{drive.name}</h3>
               <p className="text-gray-400 text-sm mb-4">{drive.size} • {drive.used}% used</p>
-              
+
               <div className="w-full bg-gray-700 rounded-full h-2.5">
-                <div 
-                  className={`h-2.5 rounded-full ${
-                    drive.used > 80 ? 'bg-red-500' : 
-                    drive.used > 60 ? 'bg-yellow-500' : 'bg-blue-500'
-                  }`} 
+                <div
+                  className={`h-2.5 rounded-full ${drive.used > 80 ? 'bg-red-500' :
+                      drive.used > 60 ? 'bg-yellow-500' : 'bg-blue-500'
+                    }`}
                   style={{ width: `${drive.used}%` }}
                 ></div>
               </div>
-              
+
               <button className="mt-6 w-full py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
                 Explore
               </button>
@@ -101,8 +100,8 @@ export default function Home() {
                 <h2 className="text-xl font-semibold text-white">PC Drive</h2>
                 <p className="text-gray-400">Access your computer's files remotely</p>
               </div>
-              <a 
-                href={pcUrl} 
+              <a
+                href={pcUrl}
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center"
               >
                 Connect

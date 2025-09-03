@@ -19,7 +19,7 @@ function decodeJWT(token: string) {
   return JSON.parse(jsonPayload); // Parse the JSON payload
 }
 
-export default function LoginPage(token: string) {
+export default function LoginPage(token: any) {
 
   const {setIsAuthenticated,setTotalDrives,setIsPcDrive,setPcUrl} = useAuth();
 
