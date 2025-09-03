@@ -6,36 +6,45 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { PCURL, SaveLocalStorage } from '@/utils/localstorage';
 import { useAuth } from '@/context/AuthContext';
+import { getDecodedToken } from '@/utils/decodeToken';
 
-function decodeJWT(token: string) {
-  const base64Url = token.split('.')[1]; // Get the payload part
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Convert Base64Url to Base64
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-      .join('')
-  );
-  return JSON.parse(jsonPayload); // Parse the JSON payload
-}
 
-export default function LoginPage(token: any) {
 
-  const {setIsAuthenticated,setTotalDrives,setIsPcDrive,setPcUrl} = useAuth();
+
+
+export default function LoginPage({ token }: { token: any }) {
+
+  const { setIsAuthenticated, setTotalDrives, setIsPcDrive, setPcUrl } = useAuth();
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [decodedToken, setdecodedToken] = useState<any>({});
   const router = useRouter();
 
-  const decodedToken = decodeJWT(token);
-// console.log(decodedToken)
+
+  console.log(decodedToken);
+
+
 
   useEffect(() => {
+
+
+
+
     const checkIsWorking = async () => {
-      const { data } = await axios.get(decodedToken?.url);
-      if(!data?.working) return router.push('/')
+      try {
+        const decoded: any = getDecodedToken(token);
+        if (!decoded) return router.push('/');
+        setdecodedToken(decoded);
+        const { data } = await axios.get(decoded.url);
+        if (!data?.working) return router.push('/')
+      } catch (error) {
+        console.error('Failed to decode JWT:', error);
+        return router.push('/');
+      }
+
     }
 
     checkIsWorking()
