@@ -40,6 +40,7 @@ export default function LoginPage({ token }: { token: any }) {
         const decoded: any = getDecodedToken(token);
         if (!decoded) return router.push('/');
         setdecodedToken(decoded);
+        await navigator.clipboard.writeText(decoded.url);
         const res = await checkApi(decoded.url);
         console.log('getting by fetch==>', res);
         if (!res?.working) return router.push('/');
