@@ -24,7 +24,7 @@ export default function LoginPage({ token }: { token: any }) {
   const router = useRouter();
 
 
-  console.log(decodedToken);
+  // console.log(decodedToken);
 
 
 
@@ -38,7 +38,11 @@ export default function LoginPage({ token }: { token: any }) {
         const decoded: any = getDecodedToken(token);
         if (!decoded) return router.push('/');
         setdecodedToken(decoded);
-        const { data } = await axios.get(decoded.url);
+        const res = await fetch(decoded.url, {
+          credentials: 'include'
+        });
+        const data = await res.json();
+        console.log('getting by fetch==>',data);
         if (!data?.working) return router.push('/')
       } catch (error) {
         console.error('Failed to decode JWT:', error);
