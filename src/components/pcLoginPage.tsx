@@ -7,6 +7,8 @@ import axios from 'axios';
 import { PCURL, SaveLocalStorage } from '@/utils/localstorage';
 import { useAuth } from '@/context/AuthContext';
 import { getDecodedToken } from '@/utils/decodeToken';
+import { checkApi } from '@/utils/checkApi';
+import { data } from 'framer-motion/m';
 
 
 
@@ -38,12 +40,9 @@ export default function LoginPage({ token }: { token: any }) {
         const decoded: any = getDecodedToken(token);
         if (!decoded) return router.push('/');
         setdecodedToken(decoded);
-        const res = await fetch(decoded.url, {
-          credentials: 'include'
-        });
-        const data = await res.json();
-        console.log('getting by fetch==>',data);
-        if (!data?.working) return router.push('/')
+        const res = await checkApi(decoded.url);
+        console.log('getting by fetch==>', res);
+        if (!res?.working) return router.push('/');
       } catch (error) {
         console.error('Failed to decode JWT:', error);
         return router.push('/');
